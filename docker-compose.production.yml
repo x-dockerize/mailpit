@@ -1,0 +1,38 @@
+services:
+  mailpit:
+    image: axllent/mailpit:${MAILPIT_VERSION:?required}
+    container_name: mailpit
+    restart: unless-stopped
+    environment:
+      MP_SMTP_TLS_CERT: /certs/cert.pem
+      MP_SMTP_TLS_KEY: /certs/key.pem
+      MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+    volumes:
+      - ./.docker/certs:/certs:ro
+    networks:
+      - traefik-network
+      - mailpit-network
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-network
+
+      - traefik.http.routers.mailpit.rule=Host(`${MAILPIT_SERVER_HOSTNAME:?required}`)
+      - traefik.http.routers.mailpit.entrypoints=websecure
+      - traefik.http.routers.mailpit.tls.certresolver=le-cloudflare
+      - traefik.http.routers.mailpit.middlewares=trusted@file
+      - traefik.http.routers.mailpit.service=mailpit
+
+      - traefik.http.services.mailpit.loadbalancer.server.port=8025
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8025/livez"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+
+networks:
+  traefik-network:
+    external: true
+  mailpit-network:
+    external: true
