@@ -17,8 +17,8 @@ services:
       - traefik.docker.network=traefik-network
 
       - traefik.http.routers.mailpit.rule=Host(`${MAILPIT_SERVER_HOSTNAME:?required}`)
-      - traefik.http.routers.mailpit.entrypoints=websecure
-      - traefik.http.routers.mailpit.tls.certresolver=le-cloudflare
+      - traefik.http.routers.mailpit.entrypoints=https
+      - traefik.http.routers.mailpit.tls.certresolver=cloudflare
       - traefik.http.routers.mailpit.middlewares=trusted@file
       - traefik.http.routers.mailpit.service=mailpit
 
