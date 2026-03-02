@@ -60,7 +60,7 @@ fi
 # --------------------------------------------------
 # Docker Network
 # --------------------------------------------------
-NETWORK_NAME="mailpit-network"
+NETWORK_NAME="mail-network"
 if docker network inspect "$NETWORK_NAME" > /dev/null 2>&1; then
   echo "ℹ️  Docker network '$NETWORK_NAME' zaten mevcut"
 else
@@ -88,9 +88,9 @@ echo "   Port : 1025"
 echo "   TLS  : STARTTLS (self-signed)"
 echo "   Auth : Yok"
 echo "-----------------------------------------------"
-echo "🔗 Test edilecek servisi mailpit-network'e ekle:"
+echo "🔗 Test edilecek servisi $NETWORK_NAME'e ekle:"
 echo "   networks:"
-echo "     - mailpit-network"
+echo "     - $NETWORK_NAME"
 echo "-----------------------------------------------"
 echo "⚠️ Self-signed sertifika kullandığından n8n için:"
 echo "   NODE_TLS_REJECT_UNAUTHORIZED=0"

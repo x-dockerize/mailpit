@@ -11,7 +11,7 @@ services:
       - ./.docker/certs:/certs:ro
     networks:
       - traefik-network
-      - mailpit-network
+      - mail-network
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-network
@@ -34,5 +34,5 @@ services:
 networks:
   traefik-network:
     external: true
-  mailpit-network:
+  mail-network:
     external: true
